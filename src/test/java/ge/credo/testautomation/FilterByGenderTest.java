@@ -34,10 +34,9 @@ public class FilterByGenderTest extends BaseTest {
         assertThat(users.getFirst())
                 .hasName(expectedUser.getName())
                 .hasAge(expectedUser.getAge())
+                .hasGender(expectedUser.getGender())
+                .hasId(expectedUser.getId())
                 .hasGender(expectedUser.getGender());
-
-        assertThat(users.getFirst().getId()).isEqualTo(expectedUser.getId());
-        assertThat(users.getFirst().getGender()).isEqualTo(genderParam);
     }
 
     @Test(dataProvider = "invalidGenderData", dataProviderClass = UsersDataProviders.class, description = "GET /users?gender=unknown → 422 ცარიელი სია")

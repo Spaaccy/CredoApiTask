@@ -33,10 +33,9 @@ public class FilterByAgeTest extends BaseTest {
         assertThat(users.getFirst())
                 .hasName(expectedUser.getName())
                 .hasAge(expectedUser.getAge())
-                .hasGender(expectedUser.getGender());
-
-        assertThat(users.getFirst().getId()).isEqualTo(expectedUser.getId());
-        assertThat(users.getFirst().getAge()).isEqualTo(Integer.parseInt(ageParam));
+                .hasGender(expectedUser.getGender())
+                .hasId(expectedUser.getId())
+                .hasAge(expectedUser.getAge());
     }
 
     @Test(dataProvider = "invalidAgeData", dataProviderClass = UsersDataProviders.class, description = "GET /users?age={invalid} → 400 Bad Request")

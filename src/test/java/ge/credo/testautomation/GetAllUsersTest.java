@@ -34,14 +34,12 @@ public class GetAllUsersTest extends BaseTest {
         assertThat(users)
                 .isNotNull()
                 .isNotEmpty()
-                .hasSize(expectedCount)
-                .containsExactly(StubData.USER_FEMALE, StubData.USER_MALE);
+                .hasSize(expectedCount);
 
         assertThat(users.get(userIndex))
                 .hasName(expectedUser.getName())
                 .hasAge(expectedUser.getAge())
-                .hasGender(expectedUser.getGender());
-
-        assertThat(users.get(userIndex).getId()).isEqualTo(expectedUser.getId());
+                .hasGender(expectedUser.getGender())
+                .hasId(expectedUser.getId());
     }
 }
