@@ -48,28 +48,24 @@ A robust, production-grade **API test automation framework** built with **Java 2
 
 ## ✅ Test Coverage
 
-### **18 Total Tests** — 4 Test Classes × 3+ Data Provider Entries Each
+### **14 Total Tests** — 4 Test Classes, Data-Driven via `@DataProvider`
 
-| Test Class | Scenario | Endpoint | Status | Count |
+| Test Class | Method | Data Provider Rows | Endpoint | Status |
 |---|---|---|---|---|
-| **GetAllUsersTest** | GetAllUsers_200 | `GET /users` | `200` | 3 |
-| | GetAllUsers_CheckFirstUser | `GET /users` | `200` | |
-| | GetAllUsers_CheckSecondUser | `GET /users` | `200` | |
-| **FilterByAgeTest** | FilterByAge_30 | `GET /users?age=30` | `200` | 3 |
-| | FilterByAge_25 | `GET /users?age=25` | `200` | |
-| | FilterByAge_45 | `GET /users?age=45` | `200` | |
-| *(negative)* | InvalidAge_Negative | `GET /users?age=-1` | `400` | 3 |
-| | InvalidAge_Zero | `GET /users?age=0` | `400` | |
-| | InvalidAge_String | `GET /users?age=abc` | `400` | |
-| **FilterByGenderTest** | FilterByGender_male | `GET /users?gender=male` | `200` | 3 |
-| | FilterByGender_female | `GET /users?gender=female` | `200` | |
-| | FilterByGender_male_second | `GET /users?gender=male` | `200` | |
-| *(negative)* | InvalidGender_unknown | `GET /users?gender=unknown` | `422` | 3 |
-| | InvalidGender_empty | `GET /users?gender=` | `422` | |
-| | InvalidGender_numeric | `GET /users?gender=123` | `422` | |
-| **ServerErrorTest** | InternalServerError_500 | `GET /users` | `500` | 3 |
-| | InternalServerError_500_CheckMessage | `GET /users` | `500` | |
-| | InternalServerError_500_CheckBody | `GET /users` | `500` | |
+| **GetAllUsersTest** | `testGetAllUsers_Positive` | `USER_FEMALE` (index 0) | `GET /users` | `200` |
+| | | `USER_MALE` (index 1) | `GET /users` | `200` |
+| **FilterByAgeTest** | `testFilterByAge_Positive` | age=30 → `USER_FEMALE` | `GET /users?age=30` | `200` |
+| | | age=25 → `USER_FEMALE_25` | `GET /users?age=25` | `200` |
+| | | age=45 → `USER_MALE_45` | `GET /users?age=45` | `200` |
+| | `testInvalidAge_Negative` | age=-1 → `BAD_REQUEST` | `GET /users?age=-1` | `400` |
+| | | age=0 → `BAD_REQUEST` | `GET /users?age=0` | `400` |
+| | | age=abc → `BAD_REQUEST` | `GET /users?age=abc` | `400` |
+| **FilterByGenderTest** | `testFilterByGender_Positive` | gender=male → `USER_MALE` | `GET /users?gender=male` | `200` |
+| | | gender=female → `USER_FEMALE` | `GET /users?gender=female` | `200` |
+| | `testInvalidGender_Negative` | gender=unknown | `GET /users?gender=unknown` | `422` |
+| | | gender= *(empty)* | `GET /users?gender=` | `422` |
+| | | gender=123 | `GET /users?gender=123` | `422` |
+| **ServerErrorTest** | `testInternalServerError_Negative` | `SERVER_ERROR` | `GET /users` | `500` |
 
 ---
 
@@ -99,7 +95,7 @@ mvn clean test
 This will automatically:
 - Start a WireMock Docker container
 - Register all API stubs
-- Execute 18 tests across 4 test classes
+- Execute 14 tests across 4 test classes
 - Save results to `test-results.db`
 - Stop the WireMock container
 
@@ -169,7 +165,7 @@ assertThat(error).hasError("Bad Request").hasMessage("Invalid age parameter");
 ```
 
 ### 🔹 Data-Driven Testing
-Every test uses **TestNG `@DataProvider`** with **3+ entries per provider**, covering positive cases, boundary values, and invalid inputs.
+Every test uses **TestNG `@DataProvider`** passing full `User`/`ErrorResponse` objects — no scattered fields. Each data provider row represents a **unique scenario** with distinct input and expected output.
 
 ### 🔹 Allure Integration
 Full traceability with `@Step`, `@Feature`, `@Description`, `@Severity`, plus automatic HTTP logging via `AllureRestAssured` filter.
