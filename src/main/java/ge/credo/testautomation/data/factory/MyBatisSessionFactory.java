@@ -1,4 +1,4 @@
-package ge.credo.testautomation.data.database;
+package ge.credo.testautomation.data.factory;
 
 import ge.credo.testautomation.data.ApiConstants;
 import ge.credo.testautomation.data.mappers.TestResultMapper;

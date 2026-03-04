@@ -1,6 +1,7 @@
 package ge.credo.testautomation.data.database;
 
 import ge.credo.testautomation.data.ApiConstants;
+import ge.credo.testautomation.data.factory.MyBatisSessionFactory;
 import ge.credo.testautomation.data.mappers.TestResultMapper;
 import ge.credo.testautomation.data.models.TestResult;
 import org.apache.ibatis.session.SqlSession;
